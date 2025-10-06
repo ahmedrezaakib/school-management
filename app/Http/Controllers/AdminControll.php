@@ -25,10 +25,8 @@ class AdminControll extends Controller
             if(Auth::guard('admin')->user()->role != 'admin'){
             Auth::guard('admin')->logout();
             return redirect()->route('admin.login')->with('error','unautherise user');
-
             }
-            return redirect()->route('admin.login');
-
+            return redirect()->route('admin.dashboard');
         } else{
             return redirect()->route('admin.login')->with('error','something went wrong');
         }
@@ -48,6 +46,11 @@ class AdminControll extends Controller
     public function dashboard()
     {
         return view('admin.dashboard');
+    }
+    public function logout()
+    {
+        Auth::guard('admin')->logout();
+        return redirect()->route('admin.login')->with('success','Logout successfully');
     }
     public function form()
     {
