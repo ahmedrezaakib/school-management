@@ -28,16 +28,14 @@
     <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
 
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+    @section('customCss')
+        <link rel="stylesheet" href="{{ asset('assets/css/school-theme.css') }}">
+    @endsection
     @yield('customCss')
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-
-        <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-        </div>
-
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
 
             <ul class="navbar-nav">
@@ -182,9 +180,9 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
             <a href="index3.html" class="brand-link">
-                <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+                <img src="{{ asset('assets/images/school-logo.png') }}" alt="AdminLTE Logo" class="brand-image rounded"
                     style="opacity: .8">
-                <span class="brand-text font-weight-light">Admin</span>
+                <span class="brand-text font-weight-light">Teacher Pannel</span>
             </a>
 
             <div class="sidebar">
@@ -210,6 +208,14 @@
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
                                     Dashboard
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('teacher.my-class')}}" class="nav-link">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>
+                                    Subjects & Classes
                                 </p>
                             </a>
                         </li>
@@ -295,6 +301,9 @@
     <script src="dist/js/demo.js"></script>
 
     <script src="dist/js/pages/dashboard.js"></script>
+    @section('customJs')
+        <script src="{{ asset('assets/js/school-theme.js') }}"></script>
+    @endsection
     @yield('customJs')
 </body>
 

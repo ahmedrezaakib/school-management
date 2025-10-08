@@ -1,5 +1,5 @@
-@extends('teacher.layout')
-@section('content')
+@extends('teacher.master')
+@section('page')
     <div class="content-wrapper">
         <div class="content-header">
             <div class="container-fluid">

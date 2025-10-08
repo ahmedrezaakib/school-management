@@ -1,12 +1,23 @@
-@extends('admin.layout')
+@extends('admin.master')
+
 @section('customCss')
+  {{-- DataTables CSS --}}
   <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 
-@endsection
-@section('content')
+  {{-- Your theme --}}
+  <link rel="stylesheet" href="{{ asset('assets/css/school-theme.css') }}">
 
+  {{-- Wide-table QoL fixes --}}
+  <style>
+    .card-body { overflow-x: auto; }      /* enable horizontal scroll inside card */
+    #example1 { width: 100% !important; }
+    #example1 thead th, #example1 tbody td { white-space: nowrap; }  /* no wrapping for months */
+  </style>
+@endsection
+
+@section('page')
   <div class="content-wrapper">
 
     <section class="content-header">
@@ -29,42 +40,56 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
+
             <div class="card">
               @if(Session::has('success'))
                 <div class="alert alert-success">
                   {{ Session::get('success') }}
                 </div>
               @endif
+
               <div class="card-header row">
                 <h3 class="card-title col-md-10">Fee Structure List</h3>
                 <a href="{{ route('fee-structure.create') }}" class="col-md-2 nav-link btn btn-primary">
                   Add Fee Structure
                 </a>
               </div>
-              <div class="col-md-4">
-                <form>
+
+              <div class="col-md-4 mt-2">
+                <form method="GET">
                   <div class="form-group">
                     <label>Select Academic Year</label>
-                    <select name="academic_year_id" class="form-control">
+                    <select name="academic_year_id" class="form-control" id="academic-year-select">
                       <option value="" disabled selected>Select Academic Year</option>
                       @foreach ($academic_years as $academic_year)
-                        <option value="{{ $academic_year->id }}" {{ $academic_year->id == request('academic_year_id') ? 'selected' : '' }}>{{ $academic_year->name }}</option>
+                        <option value="{{ $academic_year->id }}" {{ $academic_year->id == request('academic_year_id') ? 'selected' : '' }}>
+                          {{ $academic_year->name }}
+                        </option>
                       @endforeach
                     </select>
-                    <label>Select Class</label>
-                    <select name="class_id" class="form-control">
+
+                    <label class="mt-2">Select Class</label>
+                    <select name="class_id" class="form-control" id="class-select">
                       <option value="" disabled selected>Select Class</option>
                       @foreach ($classes as $class)
                         <option value="{{ $class->id }}" {{ $class->id == request('class_id') ? 'selected' : '' }}>
-                          {{ $class->name }}</option>
+                          {{ $class->name }}
+                        </option>
                       @endforeach
                     </select>
-                    
+
+                    {{-- Optional: student dropdown (only if you actually render it)
+                    <label class="mt-2">Select Student</label>
+                    <select name="student_id" class="form-control" id="student-select">
+                      <option value="" disabled selected>Select Student</option>
+                    </select>
+                    --}}
                   </div>
                   <button class="btn btn-success" type="submit">Filter</button>
                 </form>
               </div>
-              <div class="card-body ">
+
+              <div class="card-body">
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                     <tr>
@@ -92,47 +117,50 @@
                   <tbody>
                     @foreach($feeStructure as $fee)
                       <tr>
-                        <td>{{$fee->id}}</td>
-                        <td>{{$fee->student_id}}</td>
-                        <td>{{$fee->AcademicYear->name}}</td>
-                        <td>{{$fee->Classes->name}}</td>
-                        <td>{{$fee->FeeHead->name}}</td>
-                        <td>{{$fee->january}}</td>
-                        <td>{{$fee->february}}</td>
-                        <td>{{$fee->march}}</td>
-                        <td>{{$fee->april}}</td>
-                        <td>{{$fee->may}}</td>
-                        <td>{{$fee->june}}</td>
-                        <td>{{$fee->july}}</td>
-                        <td>{{$fee->august}}</td>
-                        <td>{{$fee->september}}</td>
-                        <td>{{$fee->october}}</td>
-                        <td>{{$fee->november}}</td>
-                        <td>{{$fee->december}}</td>
-                        <td><a href="{{ route('fee-structure.edit', $fee->id) }}" class="btn btn-primary">Edit</a></td>
-                        <td><a href="{{ route('fee-structure.delete', $fee->id) }}" onclick="return confirm('are you sure')"
-                            class="btn btn-danger">Delete</a></td>
+                        <td>{{ $fee->id }}</td>
+                        <td>{{ $fee->student_id }}</td>
+                        <td>{{ $fee->AcademicYear->name }}</td>
+                        <td>{{ $fee->Classes->name }}</td>
+                        <td>{{ $fee->FeeHead->name }}</td>
+                        <td>{{ $fee->january }}</td>
+                        <td>{{ $fee->february }}</td>
+                        <td>{{ $fee->march }}</td>
+                        <td>{{ $fee->april }}</td>
+                        <td>{{ $fee->may }}</td>
+                        <td>{{ $fee->june }}</td>
+                        <td>{{ $fee->july }}</td>
+                        <td>{{ $fee->august }}</td>
+                        <td>{{ $fee->september }}</td>
+                        <td>{{ $fee->october }}</td>
+                        <td>{{ $fee->november }}</td>
+                        <td>{{ $fee->december }}</td>
+                        <td><a href="{{ route('fee-structure.edit', $fee->id) }}" class="btn btn-primary btn-sm">Edit</a></td>
+                        <td><a href="{{ route('fee-structure.delete', $fee->id) }}" onclick="return confirm('are you sure')" class="btn btn-danger btn-sm">Delete</a></td>
                       </tr>
                     @endforeach
-                    </tfoot>
+                  </tbody>
                 </table>
               </div>
 
             </div>
 
           </div>
-
         </div>
-
       </div>
-
     </section>
 
   </div>
 @endsection
+
 @section('customJs')
+  {{-- YOUR THEME JS (load once per page) --}}
+  <script src="{{ asset('assets/js/school-theme.js') }}"></script>
+
+  {{-- DataTables core --}}
   <script src="plugins/datatables/jquery.dataTables.min.js"></script>
   <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+
+  {{-- Optional plugins used here --}}
   <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
   <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
   <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
@@ -144,45 +172,39 @@
   <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
   <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
-  <script src="dist/js/adminlte.min2167.js?v=3.2.0"></script>
-
-  <script src="dist/js/demo.js"></script>
-
   <script>
     $(function () {
-      $("#example1").DataTable({
-        "responsive": true, "lengthChange": false, "autoWidth": false,
-        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-      $('#example2').DataTable({
-        "paging": true,
-        "lengthChange": false,
-        "searching": false,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
-        "responsive": true,
+      // Use horizontal scroll instead of collapsing columns
+      const dt = $("#example1").DataTable({
+        responsive: false,
+        scrollX: true,
+        scrollCollapse: true,
+        autoWidth: false,
+        lengthChange: false,
+        buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"]
       });
-    });
-  </script>
 
-  <script>
-    document.getElementById('class-select').addEventListener('change', function () {
-      const classId = this.value;
+      dt.buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+      // Optional dynamic students loader (only if you have #student-select in DOM)
+      const classSelect = document.getElementById('class-select');
       const studentSelect = document.getElementById('student-select');
-
-      if (classId) {
-        // Fetch students for selected class
-        fetch(`/admin/get-students-by-class/${classId}`)
-          .then(response => response.json())
-          .then(students => {
+      if (classSelect && studentSelect) {
+        classSelect.addEventListener('change', function () {
+          const classId = this.value;
+          if (classId) {
+            fetch(`/admin/get-students-by-class/${classId}`)
+              .then(r => r.json())
+              .then(students => {
+                studentSelect.innerHTML = '<option value="" disabled selected>Select Student</option>';
+                students.forEach(s => {
+                  studentSelect.innerHTML += `<option value="${s.id}">${s.student_id} - ${s.name}</option>`;
+                });
+              });
+          } else {
             studentSelect.innerHTML = '<option value="" disabled selected>Select Student</option>';
-            students.forEach(student => {
-              studentSelect.innerHTML += `<option value="${student.id}">${student.student_id} - ${student.name}</option>`;
-            });
-          });
-      } else {
-        studentSelect.innerHTML = '<option value="" disabled selected>Select Student</option>';
+          }
+        });
       }
     });
   </script>

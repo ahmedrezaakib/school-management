@@ -27,6 +27,7 @@ Route::group(['prefix' => 'teacher'], function () {
     });
     Route::group(['middleware' => 'teacher.auth'], function () {
         Route::get('dashboard', [TeacherController::class, 'dashboard'])->name('teacher.dashboard');
+        Route::get('my-class', [TeacherController::class, 'myClass'])->name('teacher.my-class');
         Route::get('logout', [TeacherController::class, 'logout'])->name('teacher.logout');
 
     });

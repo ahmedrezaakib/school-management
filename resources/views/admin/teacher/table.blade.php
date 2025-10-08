@@ -1,10 +1,11 @@
-@extends('admin.layout')
+@extends('admin.master')
 @section('customCss')
     <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/school-theme.css') }}">
 @endsection
-@section('content')
+@section('page')
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
@@ -32,7 +33,7 @@
                                     {{ Session::get('success') }}
                                 </div>
                             @endif
-                            
+
                             <div class="card-body">
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
@@ -76,6 +77,9 @@
             </div>
         </section>
     </div>
+@endsection
+@section('customJs')
+    <script src="{{ asset('assets/js/school-theme.js') }}"></script>
 @endsection
 @section('customJs')
     <script src="plugins/datatables/jquery.dataTables.min.js"></script>

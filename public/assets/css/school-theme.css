@@ -1,0 +1,189 @@
+/* School Management UI Theme for AdminLTE 3 (non-breaking overrides)
+   --------------------------------------------------------------- */
+
+/* 2.1) Modern school palette + font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+:root{
+  --sm-primary:#2563eb;      /* Indigo/Blue */
+  --sm-primary-2:#1e40af;
+  --sm-accent:#10b981;       /* Emerald */
+  --sm-warn:#f59e0b;         /* Amber */
+  --sm-danger:#ef4444;       /* Red */
+  --sm-surface:#0f172a;      /* Slate-900 for dark accents */
+  --sm-muted:#64748b;        /* Slate-500 */
+  --sm-bg:#f8fafc;           /* Slate-50 */
+  --sm-card:#ffffff;
+  --sm-glass:rgba(255,255,255,.06);
+}
+
+html, body{
+  font-family:"Poppins","Source Sans Pro",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans","Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol" !important;
+  background: var(--sm-bg);
+}
+
+/* 2.2) Navbar */
+.navbar.navbar-light{
+  background: linear-gradient(90deg, var(--sm-primary) 0%, var(--sm-primary-2) 100%) !important;
+  color:#fff;
+}
+.navbar-light .navbar-nav .nav-link,
+.navbar-light .navbar-nav .nav-link i{
+  color:#fff !important;
+}
+.navbar-light .form-control-navbar{
+  border-radius:999px;
+  border:0;
+}
+
+/* 2.3) Sidebar: soft glass gradient + rounded menu pills */
+.main-sidebar{
+  background: linear-gradient(180deg, #0b1220 0%, #0f172a 100%) !important;
+  border-right:1px solid rgba(255,255,255,.06);
+}
+.brand-link{
+  background: transparent !important;
+  border-bottom:1px solid rgba(255,255,255,.06) !important;
+}
+.brand-link .brand-text{
+  font-weight:700;
+  letter-spacing:.3px;
+}
+.sidebar .form-control-sidebar{
+  background: rgba(255,255,255,.08);
+  border:0;
+  color:#e2e8f0;
+}
+.nav-sidebar > .nav-item .nav-link{
+  margin:4px 8px;
+  border-radius:12px;
+  transition: all .2s ease;
+}
+.nav-sidebar > .nav-item .nav-link:hover{
+  background: rgba(255,255,255,.08);
+  transform: translateX(2px);
+}
+.nav-sidebar > .nav-item .nav-link.active{
+  background: linear-gradient(90deg, var(--sm-primary) 0%, var(--sm-accent) 100%) !important;
+  color:#fff !important;
+  box-shadow: 0 6px 18px rgba(37,99,235,.25);
+}
+
+/* 2.4) Content wrapper + cards */
+.content-wrapper{
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+}
+.card{
+  border:0 !important;
+  border-radius:16px !important;
+  box-shadow: 0 8px 24px rgba(2,6,23,.06);
+}
+.card .card-header{
+  border-bottom:0;
+  background: linear-gradient(90deg, #ffffff 0%, #f8fafc 100%);
+  border-top-left-radius:16px;
+  border-top-right-radius:16px;
+}
+.card-title{
+  font-weight:600;
+}
+
+/* 2.5) Small boxes (dashboard stats) */
+.small-box{
+  border-radius:16px !important;
+  overflow:hidden;
+  box-shadow: 0 10px 24px rgba(2,6,23,.08);
+}
+.small-box.bg-info{ background: linear-gradient(135deg, #2563eb, #60a5fa) !important; }
+.small-box.bg-success{ background: linear-gradient(135deg, #10b981, #34d399) !important; }
+.small-box.bg-warning{ background: linear-gradient(135deg, #f59e0b, #fbbf24) !important; color:#111827 !important;}
+.small-box.bg-danger{ background: linear-gradient(135deg, #ef4444, #f87171) !important; }
+
+/* 2.6) Buttons */
+.btn-primary{
+  background: linear-gradient(90deg, var(--sm-primary), var(--sm-primary-2)) !important;
+  border:0 !important;
+  border-radius:12px !important;
+  box-shadow: 0 6px 16px rgba(37,99,235,.35);
+}
+.btn-success{
+  background: linear-gradient(90deg, #10b981, #34d399) !important;
+  border:0 !important;
+  border-radius:12px !important;
+}
+
+/* 2.7) Tables & forms */
+.table{
+  background:#fff;
+  border-radius:14px;
+  overflow:hidden;
+}
+.table thead th{
+  background:#f1f5f9;
+  border-bottom:0 !important;
+  font-weight:600;
+}
+.form-control{
+  border-radius:12px !important;
+  border:1px solid #e2e8f0;
+}
+.custom-select{
+  border-radius:12px !important;
+}
+
+/* 2.8) Preloader tweak */
+.preloader{
+  background: radial-gradient(1200px 600px at 20% 10%, #1e3a8a 0%, #0f172a 45%, #000 100%);
+}
+.preloader img{
+  filter: drop-shadow(0 12px 24px rgba(37,99,235,.45));
+  animation: smPulse 1.4s infinite ease-in-out;
+}
+@keyframes smPulse{
+  0%,100%{ transform:scale(1); opacity:.95;}
+  50%{ transform:scale(1.06); opacity:1;}
+}
+
+/* 2.9) Footer */
+.main-footer{
+  background:#fff;
+  border-top:1px solid #e2e8f0;
+  border-bottom-left-radius:16px;
+  border-bottom-right-radius:16px;
+  margin: 12px;
+}
+
+/* 2.10) Scrollbars (OverlayScrollbars plugin is already loaded) */
+.os-theme-light > .os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle{
+  background: linear-gradient(180deg, #94a3b8, #64748b);
+  border-radius:999px;
+}
+
+/* 2.11) Dark mode (uses AdminLTE's .dark-mode class on body) */
+.dark-mode .navbar{
+  background: linear-gradient(90deg, #111827, #0b1220) !important;
+}
+.dark-mode .content-wrapper{ background: #0b1220; }
+.dark-mode .card{ background:#0f172a; color:#e2e8f0; box-shadow:none; }
+.dark-mode .table{ background:#0f172a; color:#e2e8f0; }
+.dark-mode .table thead th{ background:#111827; color:#e5e7eb; }
+.dark-mode .form-control, .dark-mode .custom-select{
+  background:#0b1220; color:#e2e8f0; border-color:#1f2937;
+}
+
+/* --- Fix sidebar bottom horizontal scroll --- */
+.main-sidebar,
+.main-sidebar .sidebar {
+  overflow-x: hidden !important;
+}
+
+/* Optional: keep vertical scroll functional */
+.main-sidebar .sidebar {
+  overflow-y: auto;
+  height: calc(100vh - 4rem); /* fits screen height neatly */
+}
+
+/* Hide weird overlay scrollbar bottom line */
+.os-scrollbar-horizontal {
+  display: none !important;
+}

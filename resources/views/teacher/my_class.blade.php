@@ -1,10 +1,11 @@
-@extends('admin.master')
+@extends('teacher.master')
 @section('customCss')
     <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/school-theme.css') }}">
 @endsection
+
 @section('page')
 
     <div class="content-wrapper">
@@ -13,12 +14,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Assign subject to teacher</h1>
+                        <h1>My Classes and Subjects</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-                            <li class="breadcrumb-item active">Assign subject to teacher</li>
+                            <li class="breadcrumb-item"><a href="{{ route('teacher.dashboard') }}">Home</a></li>
+                            <li class="breadcrumb-item active">My Classes and Subjects</li>
                         </ol>
                     </div>
                 </div>
@@ -37,22 +38,6 @@
                             @endif
 
                             <div class="card-header">
-                                <div class="card-header">
-                                    <form class="row">
-                                        <div class="form-group col-md-2">
-                                            <select name="class_id" class="form-control">
-                                                <option disabled selected>Select Class</option>
-                                                @foreach ($classes as $class)
-                                                    <option value="{{ $class->id }}" {{ $class->id == request('class_id') ? 'selected' : '' }}>{{ $class->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-primary">Filter</button>
-                                        </div>
-                                    </form>
-                                </div>
-
                                 <div class="card-body">
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
@@ -61,25 +46,16 @@
                                                 <th>Class Name</th>
                                                 <th>Subject Name</th>
                                                 <th>Subject Type</th>
-                                                <th>Teacher Name</th>
-                                                <th>Edit</th>
-                                                <th>Delete</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($assign_teachers as $assign_teacher)
+                                            @foreach ($assign_class as $myclass)
                                                 <tr>
-                                                    <td>{{$assign_teacher->id}}</td>
-                                                    <td>{{$assign_teacher->class->name}}</td>
-                                                    <td>{{$assign_teacher->subject->name}}</td>
-                                                    <td>{{$assign_teacher->subject->type}}</td>
-                                                    <td>{{$assign_teacher->teacher->name}}</td>
-                                                    <td><a href="{{ route('assign-teacher.edit', $assign_teacher->id) }}"
-                                                            class="btn btn-primary">Edit</a></td>
-                                                    <td><a href="{{ route('assign-teacher.delete', $assign_teacher->id) }}"
-                                                            onclick="return confirm('are you sure')"
-                                                            class="btn btn-danger">Delete</a></td>
-                                                </tr>
+                                                    <td>{{$myclass->id}}</td>
+                                                    <td>{{$myclass->class->name}}</td>
+                                                    <td>{{$myclass->subject->name}}</td>
+                                                    <td>{{$myclass->subject->type}}</td>
+                                                    </tr>
                                             @endforeach
                                             </tfoot>
                                     </table>
@@ -98,9 +74,6 @@
     </div>
 @endsection
 @section('customJs')
-    <script src="{{ asset('assets/js/school-theme.js') }}"></script>
-@endsection
-@section('customJs')
     <script src="plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -117,7 +90,9 @@
     <script src="dist/js/adminlte.min2167.js?v=3.2.0"></script>
 
     <script src="dist/js/demo.js"></script>
-
+@section('customJs')
+        <script src="{{ asset('assets/js/school-theme.js') }}"></script>
+    @endsection
     <script>
         $(function () {
             $("#example1").DataTable({

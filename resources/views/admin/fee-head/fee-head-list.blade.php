@@ -1,11 +1,11 @@
-@extends('admin.layout')
+@extends('admin.master')
 @section('customCss')
   <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-
+  <link rel="stylesheet" href="{{ asset('assets/css/school-theme.css') }}">
 @endsection
-@section('content')
+@section('page')
 
   <div class="content-wrapper">
 
@@ -65,18 +65,15 @@
                     </tfoot>
                 </table>
               </div>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
-
     </section>
-
   </div>
+@endsection
+@section('customJs')
+  <script src="{{ asset('assets/js/school-theme.js') }}"></script>
 @endsection
 @section('customJs')
   <script src="plugins/datatables/jquery.dataTables.min.js"></script>
