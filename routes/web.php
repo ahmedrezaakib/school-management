@@ -11,6 +11,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TimetableController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminControll;
 use App\Model\FeeStructure;
@@ -45,6 +46,18 @@ Route::group(['prefix' => 'student'], function () {
         Route::get('dashboard', [UserController::class, 'dashboard'])->name('student.dashboard'); // ✅ Changed to GET
         Route::post('logout', [UserController::class, 'logout'])->name('student.logout');
     });
+});
+
+Route::prefix('timetable')->group(function () {
+    Route::get('/', [TimetableController::class, 'index'])->name('timetable.index');
+    Route::get('/create', [TimetableController::class, 'create'])->name('timetable.create');
+    Route::post('/store', [TimetableController::class, 'store'])->name('timetable.store');
+    Route::get('/edit/{period}', [TimetableController::class, 'edit'])->name('timetable.edit');
+    Route::put('/update/{period}', [TimetableController::class, 'update'])->name('timetable.update');
+    Route::delete('/destroy/{period}', [TimetableController::class, 'destroy'])->name('timetable.destroy');
+
+    // must match your controller method name:
+    Route::get('/class/{classId}', [TimetableController::class, 'showByClass'])->name('timetable.class');
 });
 
 Route::group(['prefix' => 'admin'], function () {
@@ -123,7 +136,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('assign-subject/edit/{id}', [AssignSubjectController::class, 'edit'])->name('assign-subject.edit');
     Route::get('assign-subject/delete/{id}', [AssignSubjectController::class, 'delete'])->name('assign-subject.delete');
     Route::post('assign-subject/update/{id}', [AssignSubjectController::class, 'update'])->name('assign-subject.update');
-    
+
     //Assign Teacher subject 
     Route::get('assign-teacher/create', [AssignTeacherToClassController::class, 'index'])->name('assign-teacher.create');
     Route::post('assign-teacher/store', [AssignTeacherToClassController::class, 'store'])->name('assign-teacher.store');
@@ -143,3 +156,13 @@ Route::group(['prefix' => 'admin'], function () {
 
     // });
 });
+
+// Route::prefix('timetable')->group(function () {
+//     Route::get('/', [TimetableController::class, 'index'])->name('timetable.index');       // class select page
+//     Route::get('/create', [TimetableController::class, 'create'])->name('timetable.create'); // add period form
+//     Route::post('/store', [TimetableController::class, 'store'])->name('timetable.store');   // store period
+//     Route::get('/edit/{id}', [TimetableController::class, 'edit'])->name('timetable.edit');  // edit form
+//     Route::put('/update/{id}', [TimetableController::class, 'update'])->name('timetable.update'); // update
+//     Route::delete('/destroy/{id}', [TimetableController::class, 'destroy'])->name('timetable.destroy'); // delete
+//     Route::get('/class/{classId}', [TimetableController::class, 'classTimetable'])->name('timetable.class'); // show by class
+// });
