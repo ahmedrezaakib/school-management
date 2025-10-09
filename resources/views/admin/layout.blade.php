@@ -52,7 +52,7 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <a href="{{ route('admin.dashboard') }}" class="brand-link">
             <img src="{{ asset('assets/images/school-logo.png') }}" alt="School Logo"
-                 class="brand-image rounded" style="opacity: .9; background:#fff;">
+                class="brand-image rounded" style="opacity: .9; background:#fff;">
             <span class="brand-text font-weight-bold text-light">Admin Panel</span>
         </a>
 
@@ -196,7 +196,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item"><a href="{{ route('timetable.index') }}" class="nav-link"><i class="far fa-circle nav-icon"></i> View Timetable</a></li>
-                            <li class="nav-item"><a href="{{ route('timetable.create') }}" class="nav-link"><i class="far fa-circle nav-icon"></i> Add Period</a></li>
+                            <li class="nav-item"><a href="{{ route('timetable.create') }}" class="nav-link"><i class="far fa-circle nav-icon"></i> Add Timetable</a></li>
                         </ul>
                     </li>
                     <!-- ✅ End Time Table -->

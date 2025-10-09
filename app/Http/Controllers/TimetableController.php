@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class TimetableController extends Controller
 {
@@ -38,7 +39,7 @@ class TimetableController extends Controller
 
     public function create(Request $request)
     {
-        $classes  = Classes::orderBy('name')->get();
+        $classes = Classes::orderBy('name')->get();
         $subjects = Subject::orderBy('name')->get();
         // Only show teachers
         $teachers = User::where('role', 'teacher')->orderBy('name')->get();
@@ -46,29 +47,29 @@ class TimetableController extends Controller
         $days = [0 => 'Sun', 1 => 'Mon', 2 => 'Tue', 3 => 'Wed', 4 => 'Thu', 5 => 'Fri', 6 => 'Sat'];
 
         return view('timetable.form', [
-            'mode'     => 'create',
-            'period'   => new Period(),
-            'classes'  => $classes,
+            'mode' => 'create',
+            'period' => new Period(),
+            'classes' => $classes,
             'subjects' => $subjects,
             'teachers' => $teachers,
-            'days'     => $days,
+            'days' => $days,
         ]);
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'class_id'         => ['required', 'exists:classes,id'],
-            'subject_id'       => ['required', 'exists:subjects,id'],
+            'class_id' => ['required', 'exists:classes,id'],
+            'subject_id' => ['required', 'exists:subjects,id'],
             // FIX: validate against users table & ensure role=teacher
-            'teacher_id'       => [
+            'teacher_id' => [
                 'required',
                 Rule::exists('users', 'id')->where(fn($q) => $q->where('role', 'teacher')),
             ],
-            'day_of_week'      => ['required', 'integer', 'between:0,6'],
-            'start_time'       => ['required', 'date_format:H:i'],
-            'end_time'         => ['required', 'date_format:H:i', 'after:start_time'],
-            'room'             => ['nullable', 'string', 'max:100'],
+            'day_of_week' => ['required', 'integer', 'between:0,6'],
+            'start_time' => ['required', 'date_format:H:i'],
+            'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
+            'room' => ['nullable', 'string', 'max:100'],
             'academic_year_id' => ['nullable', 'exists:academic_years,id'],
         ]);
 
@@ -104,7 +105,7 @@ class TimetableController extends Controller
             ->where('day_of_week', $data['day_of_week'])
             ->where(function ($q) use ($data) {
                 $q->where('start_time', '<', $data['end_time'])
-                  ->where('end_time',   '>', $data['start_time']);
+                    ->where('end_time', '>', $data['start_time']);
             })
             ->exists();
 
@@ -119,7 +120,7 @@ class TimetableController extends Controller
             ->where('day_of_week', $data['day_of_week'])
             ->where(function ($q) use ($data) {
                 $q->where('start_time', '<', $data['end_time'])
-                  ->where('end_time',   '>', $data['start_time']);
+                    ->where('end_time', '>', $data['start_time']);
             })
             ->exists();
 
@@ -136,38 +137,40 @@ class TimetableController extends Controller
             ->with('success', 'Period added.');
     }
 
+
+
     public function edit(Period $period)
     {
-        $classes  = Classes::orderBy('name')->get();
+        $classes = Classes::orderBy('name')->get();
         $subjects = Subject::orderBy('name')->get();
         $teachers = User::where('role', 'teacher')->orderBy('name')->get();
 
         $days = [0 => 'Sun', 1 => 'Mon', 2 => 'Tue', 3 => 'Wed', 4 => 'Thu', 5 => 'Fri', 6 => 'Sat'];
 
         return view('timetable.form', [
-            'mode'     => 'edit',
-            'period'   => $period,
-            'classes'  => $classes,
+            'mode' => 'edit',
+            'period' => $period,
+            'classes' => $classes,
             'subjects' => $subjects,
             'teachers' => $teachers,
-            'days'     => $days,
+            'days' => $days,
         ]);
     }
 
     public function update(Request $request, Period $period)
     {
         $data = $request->validate([
-            'class_id'         => ['required', 'exists:classes,id'],
-            'subject_id'       => ['required', 'exists:subjects,id'],
+            'class_id' => ['required', 'exists:classes,id'],
+            'subject_id' => ['required', 'exists:subjects,id'],
             // FIX: users table + role constraint
-            'teacher_id'       => [
+            'teacher_id' => [
                 'required',
                 Rule::exists('users', 'id')->where(fn($q) => $q->where('role', 'teacher')),
             ],
-            'day_of_week'      => ['required', 'integer', 'between:0,6'],
-            'start_time'       => ['required', 'date_format:H:i'],
-            'end_time'         => ['required', 'date_format:H:i', 'after:start_time'],
-            'room'             => ['nullable', 'string', 'max:100'],
+            'day_of_week' => ['required', 'integer', 'between:0,6'],
+            'start_time' => ['required', 'date_format:H:i'],
+            'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
+            'room' => ['nullable', 'string', 'max:100'],
             'academic_year_id' => ['nullable', 'exists:academic_years,id'],
         ]);
 
@@ -200,7 +203,7 @@ class TimetableController extends Controller
             ->where('id', '<>', $period->id)
             ->where(function ($q) use ($data) {
                 $q->where('start_time', '<', $data['end_time'])
-                  ->where('end_time',   '>', $data['start_time']);
+                    ->where('end_time', '>', $data['start_time']);
             })
             ->exists();
 
@@ -215,7 +218,7 @@ class TimetableController extends Controller
             ->where('id', '<>', $period->id)
             ->where(function ($q) use ($data) {
                 $q->where('start_time', '<', $data['end_time'])
-                  ->where('end_time',   '>', $data['start_time']);
+                    ->where('end_time', '>', $data['start_time']);
             })
             ->exists();
 
@@ -241,4 +244,119 @@ class TimetableController extends Controller
             ->route('timetable.class', $classId)
             ->with('success', 'Period deleted.');
     }
+
+    // public function myTeacherClasses()
+    // {
+    //     $teacherId = Auth::id();
+
+    //     // classes the teacher is assigned to (distinct)
+    //     $classes = DB::table('assign_teacher_to_classes as atc')
+    //         ->join('classes as c', 'c.id', '=', 'atc.class_id')
+    //         ->where('atc.teacher_id', $teacherId)
+    //         ->select('c.id', 'c.name')
+    //         ->distinct()
+    //         ->orderBy('c.name')
+    //         ->get();
+
+    //     return view('timetable.teacher-classes', compact('classes'));
+    // }
+
+    /**
+     * TEACHER: show timetable for a class ONLY if this teacher is assigned to that class
+     */
+    // public function teacherClassTimetable($classId)
+    // {
+    //     $teacherId = Auth::id();
+
+    //     $allowed = DB::table('assign_teacher_to_classes')
+    //         ->where('class_id', $classId)
+    //         ->where('teacher_id', $teacherId)
+    //         ->exists();
+
+    //     if (!$allowed)
+    //         abort(403, 'You are not assigned to this class.');
+
+    //     $class = \App\Models\Classes::findOrFail($classId);
+    //     $periods = \App\Models\Period::with(['subject', 'teacher'])
+    //         ->forClass($classId)
+    //         ->weekOrdered()
+    //         ->get()
+    //         ->groupBy('day_of_week');
+
+    //     $days = [0 => 'Sun', 1 => 'Mon', 2 => 'Tue', 3 => 'Wed', 4 => 'Thu', 5 => 'Fri', 6 => 'Sat'];
+
+    //     // reuse the same grid view you already have
+    //     return view('timetable.show', compact('class', 'periods', 'days'));
+    // }
+    public function myTeacherClasses()
+    {
+        $teacher = Auth::user() ?: Auth::guard('teacher')->user();
+        if (!$teacher)
+            abort(401);
+        $teacherId = $teacher->id;
+
+        $classes = DB::table('assign_teacher_to_classes as atc')
+            ->join('classes as c', 'c.id', '=', 'atc.class_id')
+            ->where('atc.teacher_id', $teacherId)
+            ->select('c.id', 'c.name')
+            ->distinct()
+            ->orderBy('c.name')
+            ->get();
+
+        return view('teacher.timetable.classes', compact('classes'));
+    }
+
+    public function teacherClassTimetable($classId)
+    {
+        $teacher = Auth::user() ?: Auth::guard('teacher')->user();
+        if (!$teacher)
+            abort(401);
+        $teacherId = $teacher->id;
+
+        $allowed = DB::table('assign_teacher_to_classes')
+            ->where('class_id', $classId)
+            ->where('teacher_id', $teacherId)
+            ->exists();
+
+        if (!$allowed)
+            abort(403, 'You are not assigned to this class.');
+
+        $class = \App\Models\classes::findOrFail($classId);
+
+        $periods = \App\Models\Period::with(['subject', 'teacher'])
+            ->where('class_id', $classId)
+            ->orderBy('day_of_week')
+            ->orderBy('start_time')
+            ->get()
+            ->groupBy('day_of_week');
+
+        $days = [0 => 'Sun', 1 => 'Mon', 2 => 'Tue', 3 => 'Wed', 4 => 'Thu', 5 => 'Fri', 6 => 'Sat'];
+
+        return view('teacher.timetable.show', compact('class','periods','days'));
+    }
+
+    /**
+     * STUDENT: show the student's own class timetable
+     */
+    public function myStudentTimetable()
+    {
+        $user = Auth::user();
+        if (!$user || $user->role !== 'student' || !$user->class_id) {
+            abort(403, 'No class found for this student.');
+        }
+
+        $classId = $user->class_id;
+        $class = Classes::findOrFail($classId);
+        $periods = Period::with(['subject', 'teacher'])
+            ->forClass($classId)
+            ->weekOrdered()
+            ->get()
+            ->groupBy('day_of_week');
+
+        $days = [0 => 'Sun', 1 => 'Mon', 2 => 'Tue', 3 => 'Wed', 4 => 'Thu', 5 => 'Fri', 6 => 'Sat'];
+
+        // You can show with a student layout; for speed, reuse the same grid
+        return view('student.timetable.show', compact('class', 'periods', 'days'));
+    }
+
 }

@@ -1,5 +1,5 @@
-@extends('admin.layout')
-@section('content')
+@extends('admin.master')
+@section('page')
 
     <div class="content-wrapper">
         <section class="content-header">

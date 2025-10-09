@@ -7,6 +7,7 @@ use App\Http\Controllers\AssignTeacherToClassController;
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\FeeHeadController;
 use App\Http\Controllers\FeeStructureController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
@@ -17,9 +18,10 @@ use App\Http\Controllers\AdminControll;
 use App\Model\FeeStructure;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', [LandingController::class, 'index'])->name('landing');
+
+//Teacher Route
 
 Route::group(['prefix' => 'teacher'], function () {
     Route::group(['middleware' => 'teacher.guest'], function () {
@@ -31,8 +33,15 @@ Route::group(['prefix' => 'teacher'], function () {
         Route::get('my-class', [TeacherController::class, 'myClass'])->name('teacher.my-class');
         Route::get('logout', [TeacherController::class, 'logout'])->name('teacher.logout');
 
+        // Route::get('classes', [TimetableController::class, 'myTeacherClasses'])->name('teacher.classes');
+        // Route::get('timetable/class/{classId}', [TimetableController::class, 'teacherClassTimetable'])->name('teacher.timetable.class');
+        Route::get('my-timetable', [TimetableController::class, 'myTimetable'])->name('teacher.my-timetable');
+        Route::get('classes', [TimetableController::class, 'myTeacherClasses'])->name('teacher.classes');
+        Route::get('timetable/class/{classId}', [TimetableController::class, 'teacherClassTimetable'])->name('teacher.timetable.class');
     });
 });
+
+// Student Route
 
 Route::group(['prefix' => 'student'], function () {
     //guest
@@ -45,8 +54,11 @@ Route::group(['prefix' => 'student'], function () {
     Route::group(['middleware' => 'auth'], function () {
         Route::get('dashboard', [UserController::class, 'dashboard'])->name('student.dashboard'); // ✅ Changed to GET
         Route::post('logout', [UserController::class, 'logout'])->name('student.logout');
+        Route::get('timetable', [TimetableController::class, 'myStudentTimetable'])->name('student.timetable');
     });
 });
+
+//Timetable 
 
 Route::prefix('timetable')->group(function () {
     Route::get('/', [TimetableController::class, 'index'])->name('timetable.index');
@@ -59,6 +71,8 @@ Route::prefix('timetable')->group(function () {
     // must match your controller method name:
     Route::get('/class/{classId}', [TimetableController::class, 'showByClass'])->name('timetable.class');
 });
+
+//Admin
 
 Route::group(['prefix' => 'admin'], function () {
     // Route::group(['middleware' => 'admin.guest'], function () {

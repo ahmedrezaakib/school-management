@@ -38,4 +38,18 @@ class Period extends Model
     {
         return $this->belongsTo(\App\Models\AcademicYear::class, 'academic_year_id');
     }
+
+    public function scopeForClass($q, $classId)
+    {
+        return $q->where('class_id', $classId);
+    }
+    public function scopeForTeacher($q, $teacherId)
+    {
+        return $q->where('teacher_id', $teacherId);
+    }
+    public function scopeWeekOrdered($q)
+    {
+        return $q->orderBy('day_of_week')->orderBy('start_time');
+    }
+
 }
